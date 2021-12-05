@@ -21,6 +21,23 @@ struct Bingo {
         numbers.clear();
     }
 
+    void print () {
+        for (int j = 0; j < 5; ++j) {
+            for (int k = 0; k < 5; ++k)
+                cout << values[j][k] << ", ";
+            cout << endl;
+        }
+    }
+
+    void print_marks () {
+        for (int j = 0; j < 5; ++j) {
+            for (int k = 0; k < 5; ++k)
+                cout << marks[j][k] << ", ";
+            cout << endl;
+        }
+        cout << endl;
+    }
+
     bool mark (int n) {
         for (int i = 0; i < 25; ++i)
             if (values[i/5][i%5] == n) {
@@ -74,13 +91,20 @@ int main() {
         if (bingo_numbers.size() == 25)
             cards.push_back(Bingo(bingo_numbers));
     }
-
-    for (int n : numbers)
-        for (Bingo& b : cards)
-            if (b.mark(n)) {
-                record(b.score(n));
-                return 0;
-            }
+    
+    for (int n : numbers) {
+        int i = 0;
+        while (i < cards.size() && cards.size() > 1)
+            if (cards[i].mark(n) && cards.size() > 1)
+                cards.erase(begin(cards)+i);
+            else
+                ++i;
+        if (cards.size() == 1 && cards[0].mark(n)) {
+            cards[0].print_marks();
+            record(cards[0].score(n));
+            return 0;
+        }
+    }
 
     return 0;
 }
