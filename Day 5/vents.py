@@ -15,21 +15,33 @@ def parse(line):
     return (u, v, w, z)
 
 lines = list(map(parse, I))
-n = 1000
-underwater = [[0 for x in range(n)] for y in range(n)] 
+underwater = [[0 for x in range(1000)] for y in range(1000)] 
 
-for line in lines:
+def get_cells(u, v, w, z):
     cells = []
-    #Is horizontal or vertical
-    (u, v, w, z) = line
     length = max(abs(w-u), abs(z-v))+1
     (dx, dy) = (sign(w-u), sign(z-v))
     cells = [(u + r * dx, v + r * dy) for r in range(length)]
-    for cell in cells:
+    return cells
+
+for line in lines:
+    (u, v, w, z) = line
+    if u == w or v == z:
+        for cell in get_cells(u, v, w, z):
+            underwater[cell[0]][cell[1]] += 1
+
+linear_sum = sum([1 for row in underwater for cell in row if cell > 1])
+
+underwater = [[0 for x in range(1000)] for y in range(1000)] 
+
+for line in lines:
+    (u, v, w, z) = line
+    for cell in get_cells(u, v, w, z):
         underwater[cell[0]][cell[1]] += 1
 
-sum = sum([1 for row in underwater for cell in row if cell > 1])
+
+diagonal_sum = sum([1 for row in underwater for cell in row if cell > 1])
 
 output = open('output', 'w')
-output.write(str(sum))
+output.write(str(linear_sum)+'\n'+str(diagonal_sum)+'\n')
 output.close()

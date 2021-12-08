@@ -1,9 +1,13 @@
 I = [line.strip() for line in open('input')]
+
+I = [line.strip() for line in open('input')]
 O = list(map(lambda x: (x.split('|'))[1].strip(), I))
 O = list(map(lambda x: x.split(), O))
 O = [i for output in O for i in output]
 C = [1 for v in O if (len(v) in [2, 4, 3, 7]) ]
-#####
+
+simple = sum(C)
+
 S = list(map(lambda x: (x.split('|'))[0].strip(), I))
 O = list(map(lambda x: (x.split('|'))[1].strip(), I))
 S = list(map(lambda x: x.split(), S))
@@ -22,7 +26,7 @@ numbers = [
     set(['a', 'b', 'c', 'd', 'f', 'g'])
 ]
 
-sum = 0
+complex = 0
 for i in range(len(S)):
     SS = S[i]
     one   = list(filter(lambda x: len(x) == 2, SS))[0]
@@ -56,19 +60,14 @@ for i in range(len(S)):
         g: 'g'
     }
     translation = list(map(lambda x: set(map(lambda y: dictionary[y], x)), OO))
-    print(OO)
-    print(translation)
     password = [0] * 4
     for j in range(4):
         for k in range(10):
             if translation[j] == numbers[k]:
                 password[j] = k
-    print(password)
     password = int(''.join(list(map(str, password))))
-    sum += password
+    complex += password
 
-print(sum)
-
-
-numbers = ['cagedb', 'ab', 'gcdfa', 'fbcad', 'eafb', 'cdfbe','cdfbe', 'cdfgeb', 'dab', 'acedgfb', 'cefabd']
-numbers = list(map(set, numbers))
+output = open('output', 'w')
+output.write(str(simple)+'\n'+str(complex)+'\n')
+output.close()

@@ -48,11 +48,27 @@ struct Bingo {
     }
 };
 
-void record (int n) {
-    ofstream out;
-    out.open ("output");
-    out << n;
-    out.close();
+int winner(const vector<int>& numbers, vector<Bingo> cards) {
+    for (int n : numbers)
+        for (Bingo& b : cards)
+            if (b.mark(n))
+                return b.score(n);
+    return 0;
+}
+
+int loser(const vector<int>& numbers, vector<Bingo> cards) {
+    for (int n : numbers) {
+        int i = 0;
+        while (i < cards.size() && cards.size() > 1)
+            if (cards[i].mark(n) && cards.size() > 1)
+                cards.erase(begin(cards)+i);
+            else
+                ++i;
+        if (cards.size() == 1 && cards[0].mark(n))
+            return(cards[0].score(n));
+    }
+
+    return 0;
 }
 
 int main() {
@@ -75,12 +91,12 @@ int main() {
             cards.push_back(Bingo(bingo_numbers));
     }
 
-    for (int n : numbers)
-        for (Bingo& b : cards)
-            if (b.mark(n)) {
-                record(b.score(n));
-                return 0;
-            }
+    int winner_score = winner(numbers, cards);
+    int loser_score  = loser (numbers, cards);
 
+    ofstream out;
+    out.open ("output");
+    out << winner_score << '\n' << loser_score << '\n';
+    out.close();
     return 0;
 }
