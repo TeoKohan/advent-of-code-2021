@@ -14,11 +14,10 @@ for line in I:
 
 def move_cave(PS):
     QS = []
-    for (PB) in PS:
-        P, B = PB
+    for (P, B) in PS:
         position = P[-1]
         if position == 'end':
-            QS.append(PB)
+            QS.append((P, B))
             continue
         available = D[position]
         available = [cave for cave in available if (cave.isupper()) or (cave not in P) or (cave not in ['start', 'end'] and B) ]
