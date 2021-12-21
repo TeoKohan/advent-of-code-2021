@@ -57,7 +57,7 @@ def dirac_roll(US, RS, P):
 
 while len(US) > 0:
     US, RS, P = dirac_roll(US, RS, P)
-    
+
 output = open('output', 'w')
-output.write(str(loser_times_rolls)+'\n'+ str(max(RS.values())) +'\n')
+output.write(str(loser_times_rolls) + '\n' + str(max(RS.values())) + '\n')
 output.close()
